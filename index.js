@@ -5,6 +5,7 @@
  let msgContainer = document.querySelector(".msg-container");
 
  let turnX = true ;
+ let count = 0;
  const winPatterns = [
     [0 , 1 , 2],
     [0 , 4 , 8],
@@ -18,7 +19,7 @@
 
  boxes.forEach ((bos) => {
     bos.addEventListener("click" , () => {
-        console.log("Bos was clicked");
+        // console.log("Bos was clicked");
         if ( turnX === true){
             bos.innerText = "X";
             turnX = false
@@ -27,7 +28,12 @@
             turnX = true
         }
         bos.disabled = true ;
-        checkWinner();
+        count++ ;
+
+        let isWinner = checkWinner();
+        if ( count === 9 && !isWinner){
+            showDraw();
+        }
     })
  });
 
@@ -46,11 +52,13 @@ const enableBtn = () => {
 
 const resetGame = () => {
     turnX = true;
+    count = 0;
     enableBtn();
     msgContainer.classList.add("hide");
 }
 
  const checkWinner = () => {
+    let winnerFound = false ;
     for (let pattern of winPatterns){
         let posVal1 = boxes[pattern[0]].innerText ;
         let posVal2 = boxes[pattern[1]].innerText ;
@@ -60,16 +68,41 @@ const resetGame = () => {
             if ( posVal1 === posVal2 && posVal2 === posVal3) {
                 console.log("Winner" , posVal1)
                 showWinner(posVal1)
-                disableBtn()
+                return true;
             }
         }
     }
- }
+ };
+
+
+//  const checkDraw = () => {
+//     let allFilled = true;
+//     for (let bos of boxes) {
+//         if (bos.innerText === "") {
+//             allFilled = false;
+//             break;
+//         }
+//     }
+//     if (allFilled) {
+//         showDraw();
+//         disableBtn();
+//     }
+// };
+
+
+
+const showDraw = () => {
+    msg.innerText = `It's a draw!`;
+    msgContainer.classList.remove ("hide");
+    disableBtn();
+
+};
+
  const showWinner = (Winner) => {
     msg.innerText = `Congratulations , Winner is ${Winner}`;
     msgContainer.classList.remove ("hide");
+    disableBtn();
 
- }
-
+ };
 newGameBtn.addEventListener("click" , resetGame);
 resetBtn.addEventListener("click" , resetGame);
