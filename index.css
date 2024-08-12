@@ -57,3 +57,6 @@ body{
     font-size: 5vmin;
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }
+.hide{
+    display: none;
+}
